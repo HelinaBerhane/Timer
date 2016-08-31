@@ -1,0 +1,11 @@
+
+In this app, i want to be able to
+ - set timers in different categories
+ - use a set of user defined tasks to predict how long something will take in the future
+	- the user should be able to define if a task should be done in one go or split up into sections
+		e.g. sleeping or showering would be done in one go, whereas studying shoud be split up as much as possible
+ - create personalised timetables based on what the user wishes to do by what time
+	- the user would select a task and due date
+	- if the task has to 
+	- if the user wants to allocate a certain amount of time to something without ristrictions on when they're done, the app should
+		- disregard
