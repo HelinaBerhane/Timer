@@ -18,10 +18,10 @@ c.execute("CREATE TABLE IF NOT EXISTS time(type STRING(50), task STRING(100), ti
 #----- Functions -----#
 #---------------------#
 
-#def mean():
+def mean():
     # calculates the mean
     # = sum()/count()
-
+    return c.execute("")
 
 #def stanDev():
     # calculates the standard deviation
@@ -34,8 +34,18 @@ while True:
     if question == "y":
         
         # ask for inputs
+        prompt1 = input("do you want to view the different types? y/n - ")
+        if prompt1 == "y":
+            for row in c.execute("SELECT DISTINCT type FROM time"):
+                print(row)
         typeQuestion = input("What type of task was it? e.g. Travel/Prep/Housework - ")
-        taskQuestion = input("What task do you want to log? e.g. Travelling to uni -  ")
+        prompt2 = input("do you want to view the different tasks? y/n - ")
+        if prompt2 == "y":
+            for row in c.execute("SELECT DISTINCT type FROM time"):
+                typeArr = 
+                for row in 
+                print(row)
+        taskQuestion = input("What task do you want to log? e.g. Travelling to uni - ")
         timeQuestion = input("How long did it take you? [hh]:mm:ss - ")
         print("Type: " + typeQuestion + "\nTask: " + taskQuestion + "\nQuestion: " + timeQuestion)
 
@@ -48,8 +58,8 @@ while True:
         
     else:
         # ask for intention
-        question2 = input("do you want to view your current logs? y/n - ")
-        if question2 == "y":
+        question0 = input("do you want to view your current logs? y/n - ")
+        if question0 == "y":
             
             # Print sources of income
             print("Your sources of spending are:")
