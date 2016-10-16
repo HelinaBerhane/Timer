@@ -18,37 +18,46 @@ c.execute("CREATE TABLE IF NOT EXISTS time(type STRING(50), task STRING(100), ti
 #----- Functions -----#
 #---------------------#
 
-def mean():
+def mean(entry):
     # calculates the mean
-    # = sum()/count()
-    return c.execute("")
+    for row in c.execute("SELECT AVG(time) FROM time WHERE task = '"+ entry +"'"):
+        return row
 
 #def stanDev():
-    # calculates the standard deviation
-    # sd = sqrt (sum(|x-x\bar|^2)/n)
+#     calculates the standard deviation
+#     sd = sqrt (sum(|x-x\bar|^2)/n)
 
 while True:
     
     # ask for intention
-    question = input("Do you want to log a time? y/n - ")
-    if question == "y":
+    initialQuestion = input("Do you want to log a time (1), view your current logs (2) or view predictions (3)? - ")
+    if initialQuestion == "1":
         
-        # ask for inputs
+        # offer type reminder
         prompt1 = input("do you want to view the different types? y/n - ")
         if prompt1 == "y":
             for row in c.execute("SELECT DISTINCT type FROM time"):
                 print(row)
+        
+        # ask for type
         typeQuestion = input("What type of task was it? e.g. Travel/Prep/Housework - ")
+        
+        # offer task reminder
         prompt2 = input("do you want to view the different tasks? y/n - ")
         if prompt2 == "y":
-            for row in c.execute("SELECT DISTINCT type FROM time"):
-                typeArr = 
-                for row in 
-                print(row)
+            for row in c.execute("SELECT DISTINCT task FROM time WHERE type = '" + typeQuestion + "'" ):
+                 print(row)
+        # ask for task
         taskQuestion = input("What task do you want to log? e.g. Travelling to uni - ")
+        
+        # ask for time
         timeQuestion = input("How long did it take you? [hh]:mm:ss - ")
+        
+        # confirm the entries
         print("Type: " + typeQuestion + "\nTask: " + taskQuestion + "\nQuestion: " + timeQuestion)
-
+        
+#        # ask for confirmation
+        
         # add the inputs to the database
         logArr = [typeQuestion, taskQuestion, timeQuestion]
         c.execute("INSERT INTO time VALUES (?,?,?)", logArr)
@@ -56,15 +65,60 @@ while True:
         # commit changes
         connection.commit()
         
-    else:
+    elif initialQuestion == "2":
+        
         # ask for intention
-        question0 = input("do you want to view your current logs? y/n - ")
-        if question0 == "y":
+        prompt1 = input("do you want to see the logs for a specific type or task? - ")
+        
+        if prompt1 == "type":
             
-            # Print sources of income
-            print("Your sources of spending are:")
+            # offer reminder
+            prompt2 = input("do you want to view the different types? y/n - ")
+            if prompt2 == "y":
+                for row in c.execute("SELECT DISTINCT type FROM time"):
+                    print(row)
+            
+            # ask for intention
+            prompt3 = input("what type do you want to see? - ")
+            
+            # print the table
+            for row in c.execute("SELECT * FROM time WHERE type = '" + prompt3 + "'" ):
+                 print(row)
+            
+        elif prompt1 == "task":
+            
+            # offer reminder
+            prompt2 = input("do you want to view the different tasks? y/n - ")
+            if prompt2 == "y":
+                for row in c.execute("SELECT DISTINCT task FROM time"):
+                    print(row)
+            
+            # ask for intention
+            prompt3 = input("what task do you want to see? - ")
+            
+            # print the table
+            for row in c.execute("SELECT * FROM time WHERE task = '" + prompt3 + "'" ):
+                 print(row)
+                 
+        else:
+            # print the table
             for row in c.execute("SELECT * FROM time"):
-	            print(row)
+                 print(row)
+                 
+    elif initialQuestion == "3":
+        
+        # offer reminder
+        prompt2 = input("do you want to view the different tasks? y/n - ")
+        if prompt2 == "y":
+            for row in c.execute("SELECT DISTINCT task FROM time"):
+                print(row)
+        
+        # ask for intention
+        prompt3 = input("what task do you want to see averages for? - ")
+        print(mean(prompt3))
+        
+        
+    else:
         break
 
 #---------#
