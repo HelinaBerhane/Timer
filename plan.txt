@@ -39,3 +39,21 @@ Attributes of tasks
 			- the user should recieve a notification that
 				- there isn't enough time in the day
 				- they should reconsider something in their timetable
+				
+//
+
+git add * // [or a specific file]
+git commit -m "commit message"
+git push origin master // if you want to push to a different branch, e.g. the Untested branch in Budget, it would be git push origin Untested
+
+//
+
+When working on a repo with multiple branches, if you want to work on something that _isn't_ the master branch you must first
+git checkout BRANCH // e.g git checkout Untested
+// then you must push TO THAT BRANCH, e.g.
+git push origin BRANCH
+// then you can merge branches, if you are on branch BRANCH, then you can merge master e.g.
+git merge master
+// if you are on master and want to bring the changes from BRANCH in to your master branch, after doing
+git checkout master // (assuming you are currently on BRANCH), you then do
+git merge BRANCH
