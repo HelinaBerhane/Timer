@@ -33,7 +33,11 @@ def stanDev(entry):
         count = row
     for row in c.execute("SELECT * FROM time WHERE task = '"+ entry +"'"):
         sm = sm + (float(row[2]) - mn)**2
-    return math.sqrt(sm/int(count[0]))    
+    return math.sqrt(sm/int(count[0]))
+
+def predict(entry):
+    prediction = "for "+ str(entry) + ": mean = " + str(mean(entry)) + "; standard deviation = " + str(stanDev(entry)) + "; prediction = " + str(mean(entry) + stanDev(entry))
+    return prediction
 
 while True: 
     
@@ -114,22 +118,33 @@ while True:
                  print(row)
                  
     elif initialQuestion == "3":
-        
-        # offer reminder
-        prompt2 = input("do you want to view the different tasks? y/n - ")
-        if prompt2 == "y":
-            for row in c.execute("SELECT DISTINCT task FROM time"):
-                print(row)
-        
+                
         # ask for intention
-        prompt3 = input("what task do you want to see averages for? - ")
+        prompt2 = input("do you want to view predictions for a specific task? y/n - ")
         
-        # show predictions
-        print("the mean is " + str(mean(prompt3)))
-        print("the standard deviation is " + str(stanDev(prompt3)))
-        prediction = mean(prompt3) + stanDev(prompt3)
-        print("the prediction is " + str(prediction))
-        
+        if prompt2 == "y":
+            
+            # offer reminder
+            prompt3 = input("do you want to view the different tasks? y/n - ")
+            if prompt3 == "y":
+                for row in c.execute("SELECT DISTINCT task FROM time"):
+                    print(row[0])
+            
+            # ask for intention
+            prompt4 = input("what task do you want to see averages for? - ")
+            
+            # show predictions
+            predict(prompt4)
+            
+        else:
+            
+            # show predictions for all distinct tasks
+            tasks = []
+            for row in c.execute("SELECT DISTINCT task FROM time"):
+                tasks.append(row[0])
+            for i in tasks:
+                print(predict(i))
+            
     else:
         break
 
