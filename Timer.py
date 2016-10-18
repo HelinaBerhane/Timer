@@ -2,6 +2,7 @@
 
 ### Import Modules ###
 import sqlite3 # databases
+import math
 
 #--------------------#
 #-- Initialisation --#
@@ -21,15 +22,18 @@ c.execute("CREATE TABLE IF NOT EXISTS time(type STRING(50), task STRING(100), ti
 def mean(entry):
     # calculates the mean
     for row in c.execute("SELECT AVG(time) FROM time WHERE task = '"+ entry +"'"):
-        return row[0]
+        return float(row[0])
 
 def stanDev(entry):
-        #calculates the standard deviation
-#       sd = sqrt (sum(|x-x\bar|^2)/n)
-    sum = 0.0
+    #calculates the standard deviation
+    #sd = sqrt (sum(|x-x\bar|^2)/n)
+    sm = 0.0
+    mn = mean(entry)
+    for row in c.execute("SELECT COUNT(*) FROM time WHERE task ='"+ entry +"'"):
+        count = row
     for row in c.execute("SELECT * FROM time WHERE task = '"+ entry +"'"):
-        sum = sum + row[0] + round(mean(entry),2)
-    return str(sum)
+        sm = sm + (float(row[2]) - mn)**2
+    return math.sqrt(sm/int(count[0]))    
 
 while True: 
     
@@ -119,9 +123,11 @@ while True:
         
         # ask for intention
         prompt3 = input("what task do you want to see averages for? - ")
+        
+        # show predictions
         print("the mean is " + str(mean(prompt3)))
         print("the standard deviation is " + str(stanDev(prompt3)))
-        prediction = float(mean(prompt3)) + str(float(stanDev(prompt3)))
+        prediction = mean(prompt3) + stanDev(prompt3)
         print("the prediction is " + str(prediction))
         
     else:

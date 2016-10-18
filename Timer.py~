@@ -21,13 +21,17 @@ c.execute("CREATE TABLE IF NOT EXISTS time(type STRING(50), task STRING(100), ti
 def mean(entry):
     # calculates the mean
     for row in c.execute("SELECT AVG(time) FROM time WHERE task = '"+ entry +"'"):
-        return row
+        return row[0]
 
-#def stanDev():
-#     calculates the standard deviation
-#     sd = sqrt (sum(|x-x\bar|^2)/n)
+def stanDev(entry):
+        #calculates the standard deviation
+#       sd = sqrt (sum(|x-x\bar|^2)/n)
+    sum = 0.0
+    for row in c.execute("SELECT * FROM time WHERE task = '"+ entry +"'"):
+        sum = sum + row[0] + round(mean(entry),2)
+    return str(sum)
 
-while True:
+while True: 
     
     # ask for intention
     initialQuestion = input("Do you want to log a time (1), view your current logs (2) or view predictions (3)? - ")
@@ -115,8 +119,10 @@ while True:
         
         # ask for intention
         prompt3 = input("what task do you want to see averages for? - ")
-        print(mean(prompt3))
-        
+        print("the mean is " + str(mean(prompt3)))
+        print("the standard deviation is " + str(stanDev(prompt3)))
+        prediction = float(mean(prompt3)) + str(float(stanDev(prompt3)))
+        print("the prediction is " + str(prediction))
         
     else:
         break
