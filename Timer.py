@@ -3,6 +3,8 @@
 ### Import Modules ###
 import sqlite3 # databases
 import math
+import time
+import datetime
 
 #--------------------#
 #-- Initialisation --#
@@ -39,10 +41,18 @@ def predict(entry):
     prediction = "for "+ str(entry) + ": mean = " + str(mean(entry)) + "; standard deviation = " + str(stanDev(entry)) + "; prediction = " + str(mean(entry) + stanDev(entry))
     return prediction
 
+def toUnix(x):
+    unixTime = time.mktime(datetime.strptime(x, "%H:%M:%S").timetuple()
+    return unixTime
+
+def toTime(y):
+    formattedTime = datetime.fromtimestamp(y).strftime('%H:%M:%S')
+    return formattedTime
+
 while True: 
     
     # ask for intention
-    initialQuestion = input("Do you want to log a time (1), view your current logs (2) or view predictions (3)? - ")
+    initialQuestion = input("Do you want to log a time (1), view your current logs (2), view predictions (3) or view the time (4)? - ")
     if initialQuestion == "1":
         
         # offer type reminder
@@ -145,6 +155,12 @@ while True:
             for i in tasks:
                 print(predict(i))
             
+    elif initialQuestion == "4":
+        
+        test = input("h:m:s - ")
+        print("to unix - " + str(toUnix(test)))
+        print("to time - " + str(toTime(test)))
+        
     else:
         break
 
